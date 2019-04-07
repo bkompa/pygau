@@ -57,7 +57,9 @@ def kernel_matrix(x, y, kernel, kernel_params=None):
     return jax.vmap(lambda x_i: jax.vmap(lambda y_j: kernel(x_i, y_j, kernel_params))(y))(x)
 
 
-
+def logistic_sigmoid(x):
+    """The logistic sigmoid function"""
+    return 1 / (1 + np.exp(-1. * x))
 
 
 
