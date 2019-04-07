@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import jax
 import jax.numpy as np
+import math
 
 
 def squared_distance(x1, x2, params=None):
@@ -59,7 +60,7 @@ def kernel_matrix(x, y, kernel, kernel_params=None):
 
 def logistic_sigmoid(x):
     """The logistic sigmoid function"""
-    return 1 / (1 + np.exp(-1. * x))
+    return 1. / (1. + np.exp(-1. * x))
 
 
 
