@@ -11,6 +11,8 @@ import numpy as onp
 
 import utils
 
+from scipy.optimize import fmin_l_bfgs_b
+
 
 # Constants needed for approximating logistic sigmoid by error functions
 LAMBDAS = np.array([0.41, 0.4, 0.37, 0.44, 0.39])[:, np.newaxis]
@@ -28,25 +30,38 @@ class GaussianProcessBinaryClassifier:
         self.posterior_mode = None
         self.covariance_function = utils.squared_exponential
         self.covariance_explicit = utils.squared_exponential_explicit
-        self.covariance_params = None
+        self.covariance_params = [0., 0., 0.]
         self.is_fitted = False
 
     def fit(self, train_X, train_y):
 
         self.train_X = onp.copy(train_X)
         self.train_y = onp.copy(train_y)
-        self.train_cov = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function, self.covariance_params)
 
         if not np.all(np.bitwise_or(self.train_y==1., self.train_y==0.)):
             raise ValueError('Only supports binary 0/1 labels')
 
-        #optimize lml
+        def obj_func(theta, eval_gradient=True):
+            if eval_gradient:
+                lml, grad = self.log_marginal_likelihood(
+                    theta.tolist(), True)
+                return -lml.copy().astype('float64'), -1.*grad.copy().astype('float64')
+            else:
+                return -self.log_marginal_likelihood(theta.tolist())
+
+
+        opt_lml = fmin_l_bfgs_b(obj_func, x0=onp.zeros(len(self.covariance_params)))
+        print('optimized lml: ', opt_lml)
+
+        self.covariance_params = opt_lml[0].tolist()
+
+        self.train_cov = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function,
+                                             self.covariance_params)
 
         self.is_fitted = True
 
 
-
-    def calculate_posterior_mode(self, return_intermediates=False):
+    def calculate_posterior_mode(self, K=None, return_intermediates=False):
         """Calculate posterior mode using RW Alg 3.1
         Args:
             self.train_cov: Covariance matrix of training data
@@ -58,7 +73,8 @@ class GaussianProcessBinaryClassifier:
         eye = np.eye(f.shape[0])
 
         previous_log_marginal_likelihood = -1. * np.inf
-        K = self.train_cov
+        if K is None:
+            K = self.train_cov
         y = (self.train_y * 2 - 1)
 
         # compute the grad and Hessian of likelihood
@@ -146,7 +162,7 @@ class GaussianProcessBinaryClassifier:
         # TODO: calculate the training covariance matrix in the .fit function #can't reuse cause theta might change
         K = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function, theta)
         y = 2. * self.train_y - 1.
-        f, current_log_marginal_likelihood, (sqrt_W, L, _, a) = self.calculate_posterior_mode(True)
+        f, current_log_marginal_likelihood, (sqrt_W, L, _, a) = self.calculate_posterior_mode(K, True)
 
         if not return_gradient:
             return current_log_marginal_likelihood
@@ -160,10 +176,10 @@ class GaussianProcessBinaryClassifier:
 
         s2 = -0.5 * (np.diag(K) - np.einsum('ij, ij -> j', C, C)) * grad3_loglikelihood(f, y)
 
-        d_Z = np.zeros(theta.shape[0])
+        d_Z = np.zeros(len(theta))
 
         # i+2 because arguments 0 and 1 of self.covariance_explicit are data points x and y
-        partial_derivatives_of_kernel = [jax.grad(self.covariance_explicit, argnums=(i+2)) for i in range(theta.shape[0])]
+        partial_derivatives_of_kernel = [jax.grad(self.covariance_explicit, argnums=(i+2)) for i in range(len(theta))]
 
         for idx, param in enumerate(theta):
             d_K = utils.kernel_matrix(self.train_X, self.train_X, partial_derivatives_of_kernel[idx], theta, is_grad=True)
