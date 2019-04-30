@@ -7,6 +7,7 @@ from jax import jit
 import jax.numpy as np
 import jax.scipy as scipy
 import jax.ops
+import numpy as onp
 
 import utils
 
@@ -28,21 +29,37 @@ class GaussianProcessBinaryClassifier:
         self.covariance_function = utils.squared_exponential
         self.covariance_explicit = utils.squared_exponential_explicit
         self.covariance_params = None
+        self.is_fitted = False
 
-    def calculate_posterior_mode(self, train_cov, train_y, return_intermeidates=False):
+    def fit(self, train_X, train_y):
+
+        self.train_X = onp.copy(train_X)
+        self.train_y = onp.copy(train_y)
+        self.train_cov = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function, self.covariance_params)
+
+        if not np.all(np.bitwise_or(self.train_y==1., self.train_y==0.)):
+            raise ValueError('Only supports binary 0/1 labels')
+
+        #optimize lml
+
+        self.is_fitted = True
+
+
+
+    def calculate_posterior_mode(self, return_intermediates=False):
         """Calculate posterior mode using RW Alg 3.1
         Args:
-            train_cov: Covariance matrix of training data
-            train_y: targets of training data
+            self.train_cov: Covariance matrix of training data
+            self.train_y: targets of training data
         """
         # initialize f
-        f = np.zeros_like(train_y)
+        f = np.zeros_like(self.train_y)
         # create the identity matrix of required shape
         eye = np.eye(f.shape[0])
 
         previous_log_marginal_likelihood = -1. * np.inf
-        K = train_cov
-        y = (train_y * 2 - 1)
+        K = self.train_cov
+        y = (self.train_y * 2 - 1)
 
         # compute the grad and Hessian of likelihood
         grad_likelihood = jax.vmap(jax.grad(self.loglikelihood), in_axes=0, out_axes=0)
@@ -64,27 +81,27 @@ class GaussianProcessBinaryClassifier:
                                               np.sum(self.loglikelihood(f, y)) - \
                                               np.sum(np.log(np.diag(L)))
 
-            if current_log_marginal_likelihood - previous_log_marginal_likelihood < 1e-10:
+            if (current_log_marginal_likelihood - previous_log_marginal_likelihood) < 1e-10:
                 break
             previous_log_marginal_likelihood = current_log_marginal_likelihood
 
         self.posterior_mode = f
 
-        if return_intermeidates:
+        if return_intermediates:
             return f, current_log_marginal_likelihood, (sqrt_W, L, b, a)
         return f, current_log_marginal_likelihood
 
-    def predict_probability(self, train_X, train_y, test_X):
+    def predict_probability(self, test_X):
         """Predict binary class probability for class 1 based on Alg 3.2 of RW
         Args:
-            train_X: the training data array
-            train_y: the training targets
+            self.train_X: the training data array
+            self.train_y: the training targets
             test_X: the test points
         """
-        y = train_y * 2. - 1.
+        y = self.train_y * 2. - 1.
         eye = np.eye(y.shape[0])
-        train_cov = utils.kernel_matrix(train_X, train_X, self.covariance_function, self.covariance_params)
-        f, _ = self.calculate_posterior_mode(train_cov, train_y)
+        train_cov = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function, self.covariance_params)
+        f, _ = self.calculate_posterior_mode()
 
         # compute the grad and Hessian of likelihood
         grad_likelihood = jax.vmap(jax.grad(self.loglikelihood), in_axes=0, out_axes=0)
@@ -96,7 +113,7 @@ class GaussianProcessBinaryClassifier:
         B = eye + np.dot(sqrt_W, np.dot(train_cov, sqrt_W))
         L = scipy.linalg.cholesky(B, lower=True)
 
-        K_star = utils.kernel_matrix(train_X, test_X, self.covariance_function, self.covariance_params)
+        K_star = utils.kernel_matrix(self.train_X, test_X, self.covariance_function, self.covariance_params)
         f_star = np.dot(np.transpose(K_star), grad_likelihood(f, y))
         v = scipy.linalg.solve(L, np.dot(sqrt_W, K_star))
 
@@ -113,12 +130,12 @@ class GaussianProcessBinaryClassifier:
 
         return np.vstack((1 - pi_star, pi_star)).T
 
-    def log_marginal_likelihood(self, train_X, train_y, theta=None, return_gradient=False):
+    def log_marginal_likelihood(self, theta=None, return_gradient=False):
         """Compute the log marginal likelihood and/or grad of log marginal likelihood
         Based on RW Algorithm 5.1
         Args:
-            train_X: the training data
-            train_y: the training labels in {0,1}
+            self.train_X: the training data
+            self.train_y: the training labels in {0,1}
             theta: covariance function parameters
             return_gradient: controls if gradient of log marginal likelihood is returned
         """
@@ -127,9 +144,9 @@ class GaussianProcessBinaryClassifier:
             raise ValueError("Graident calculation requires theta!=None")
 
         # TODO: calculate the training covariance matrix in the .fit function #can't reuse cause theta might change
-        K = utils.kernel_matrix(train_X, train_X, self.covariance_function, theta)
-        y = 2. * train_y - 1.
-        f, current_log_marginal_likelihood, (sqrt_W, L, _, a) = self.calculate_posterior_mode(K, train_y, True)
+        K = utils.kernel_matrix(self.train_X, self.train_X, self.covariance_function, theta)
+        y = 2. * self.train_y - 1.
+        f, current_log_marginal_likelihood, (sqrt_W, L, _, a) = self.calculate_posterior_mode(True)
 
         if not return_gradient:
             return current_log_marginal_likelihood
@@ -149,7 +166,7 @@ class GaussianProcessBinaryClassifier:
         partial_derivatives_of_kernel = [jax.grad(self.covariance_explicit, argnums=(i+2)) for i in range(theta.shape[0])]
 
         for idx, param in enumerate(theta):
-            d_K = utils.kernel_matrix(train_X, train_X, partial_derivatives_of_kernel[idx], theta, is_grad=True)
+            d_K = utils.kernel_matrix(self.train_X, self.train_X, partial_derivatives_of_kernel[idx], theta, is_grad=True)
             s1 = 0.5 * (np.dot(np.transpose(a), np.dot(d_K, a)) - np.dot(np.ravel(np.transpose(R)), np.ravel(d_K)))
             b = np.dot(d_K, grad_loglikelihood(f, y))
             s3 = b - np.dot(K, np.dot(R, b))

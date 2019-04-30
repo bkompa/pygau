@@ -4,7 +4,6 @@
     <list default="true" id="5d1ed799-5134-422f-8462-8d6fb956f9e5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GaussianProcessClassifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/GaussianProcessClassifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,12 +12,24 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="31" selection-start-line="31" selection-end-line="48" selection-end-column="37" />
+            <state relative-caret-position="-46">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GaussianProcessClassifier.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -27,22 +38,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/GaussianProcessClassifier.py">
+        <entry file="file://$PROJECT_DIR$/classifier_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2113">
-              <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="438">
+              <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classifier_test.py">
+        <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/jax/numpy/lax_numpy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="27" column="15" lean-forward="true" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+            <state relative-caret-position="157">
+              <caret line="2176" selection-start-line="2176" selection-end-line="2176" />
             </state>
           </provider>
         </entry>
@@ -50,11 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
+            <state relative-caret-position="405">
               <caret line="28" column="74" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="74" />
-              <folding>
-                <element signature="e#29#51#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -77,7 +82,19 @@
       <find>train_cov</find>
       <find>kernel_expli</find>
       <find>d_K</find>
+      <find>print</find>
+      <find>self.cov</find>
+      <find>covari</find>
+      <find>self.covariance_params</find>
+      <find>selftrain_cov</find>
+      <find>calculate_po</find>
+      <find>predict_probability</find>
+      <find>log_marginal_likelihood</find>
     </findStrings>
+    <replaceStrings>
+      <replace>self.train_cov</replace>
+      <replace>self.train_X</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -93,8 +110,8 @@
         <option value="$PROJECT_DIR$/scipy_test" />
         <option value="$PROJECT_DIR$/classifier_test" />
         <option value="$PROJECT_DIR$/utils.py" />
-        <option value="$PROJECT_DIR$/classifier_test.py" />
         <option value="$PROJECT_DIR$/GaussianProcessClassifier.py" />
+        <option value="$PROJECT_DIR$/classifier_test.py" />
       </list>
     </option>
   </component>
@@ -107,14 +124,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
-            <path>
-              <item name="pygau" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pygau" type="462c0819:PsiDirectoryNode" />
-            </path>
             <path>
               <item name="pygau" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
@@ -128,6 +140,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -230,27 +243,41 @@
       <option name="project" value="LOCAL" />
       <updated>1554663742593</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="implementation of algorithm 5.1">
+      <created>1554780181035</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1554780181035</updated>
+    </task>
+    <task id="LOCAL-00005" summary="implementation of algorithm 5.1">
+      <created>1554954397969</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1554954397969</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.23909774" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23890063" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Python Console" weight="0.32891566" />
-      <window_info anchor="bottom" id="Terminal" weight="0.32891566" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.25903615" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32891566" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -279,7 +306,19 @@
     <MESSAGE value="initial kernel functions" />
     <MESSAGE value="posterior mode debugged" />
     <MESSAGE value="prediction init" />
-    <option name="LAST_COMMIT_MESSAGE" value="prediction init" />
+    <MESSAGE value="implementation of algorithm 5.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementation of algorithm 5.1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classifier_test.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
@@ -304,26 +343,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/kernels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-495">
-          <caret line="38" column="61" selection-start-line="38" selection-start-column="61" selection-end-line="38" selection-end-column="61" />
-          <folding>
-            <element signature="e#576#614#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/guassian_regression.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="42" column="43" selection-start-line="42" selection-start-column="43" selection-end-line="42" selection-end-column="43" />
-          <folding>
-            <element signature="e#659#697#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/kernels.py" />
+    <entry file="file://$PROJECT_DIR$/guassian_regression.py" />
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/jax/api.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
@@ -362,47 +383,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/jax/numpy/lax_numpy.py">
+    <entry file="file://$PROJECT_DIR$/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-281">
-          <caret line="180" selection-start-line="180" selection-end-line="180" />
+        <state relative-caret-position="405">
+          <caret line="28" column="74" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="74" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="28" column="74" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="74" />
+        <state relative-caret-position="-46">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
           <folding>
-            <element signature="e#29#51#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/jax/numpy/lax_numpy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="2176" selection-start-line="2176" selection-end-line="2176" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GaussianProcessClassifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifier_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="27" column="15" lean-forward="true" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="31" selection-start-line="31" selection-end-line="48" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GaussianProcessClassifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2113">
-          <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="438">
+          <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
         </state>
       </provider>
     </entry>
